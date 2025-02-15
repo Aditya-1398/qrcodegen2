@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="navbar">
+            <h1><a href="index.html" style="color: white; text-decoration: none;">QR Code Generator</a></h1>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Left Side (Buttons) -->
+        <div class="left-side">
+            <h2>Choose a Function</h2>
+            <button onclick="window.location.href='logo.html'">Generate QR Code</button>
+            <button onclick="window.location.href='vcard.html'">vCard QR Code</button>
+            <button onclick="window.location.href='custom.html'">Custom Color QR Code</button>
+        </div>
+
+        <!-- Right Side (QR Code Display) -->
+        <div class="right-side">
+            <div id="qrCodeDisplay">
+                <p>Your generated QR code will appear here.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add JavaScript for future functionality -->
+    <script>
+        // You can add QR code logic here if needed
+        console.log("QR Code Generator Page Loaded");
+        console.log("CSS loaded");
+    </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="navbar">
+            <h1><a href="index.html" style="color: white; text-decoration: none;">QR Code Generator</a></h1>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Left Side (Form) -->
+        <div class="left-side">
+            <h2>vCard QR Code</h2>
+            <form id="vcardForm">
+                <input type="text" id="nameInput" placeholder="Name" required>
+                <input type="text" id="phoneInput" placeholder="Phone" required>
+                <input type="email" id="emailInput" placeholder="Email" required>
+                <button type="submit">Generate vCard QR Code</button>
+            </form>
+        </div>
+
+        <!-- Right Side (QR Code Display) -->
+        <div class="right-side">
+            <div id="qrCodeDisplay">
+                <p>Your generated QR code will appear here.</p>
+            </div>
+            <button id="downloadButton" style="display: none;">Download QR Code</button>
+        </div>
+    </div>
+
+    <!-- Add QRCode.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        document.getElementById('vcardForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('nameInput').value;
+            const phone = document.getElementById('phoneInput').value;
+            const email = document.getElementById('emailInput').value;
+
+            // Create vCard data
+            const vcardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phone}\nEMAIL:${email}\nEND:VCARD`;
+
+            const qrCodeDisplay = document.getElementById('qrCodeDisplay');
+            qrCodeDisplay.innerHTML = ''; // Clear previous QR code
+
+            // Generate QR code
+            const qr = new QRCode(qrCodeDisplay, {
+                text: vcardData,
+                width: 200,
+                height: 200,
+            });
+
+            // Show the download button
+            document.getElementById('downloadButton').style.display = 'block';
+        });
+
+        document.getElementById("downloadButton").addEventListener("click", function () {
+            const qrCodeImg = document.querySelector("#qrCodeDisplay img");
+            const qrCodeCanvas = document.querySelector("#qrCodeDisplay canvas");
+
+            if (qrCodeImg) {
+                // Download QR code as image
+                const link = document.createElement("a");
+                link.href = qrCodeImg.src;
+                link.download = "qrcode.png";
+                link.click();
+            } else if (qrCodeCanvas) {
+                // Convert canvas to image and download
+                const link = document.createElement("a");
+                link.href = qrCodeCanvas.toDataURL("image/png");
+                link.download = "qrcode.png";
+                link.click();
+            } else {
+                alert("Please generate a QR code first!");
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+
+

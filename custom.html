@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Color QR Code</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav>
+        <div class="navbar">
+            <h1><a href="index.html" style="color: white; text-decoration: none;">QR Code Generator</a></h1>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Left Side (Form) -->
+        <div class="left-side">
+            <h2>Custom Color QR Code</h2>
+            <form id="customForm">
+                <input type="text" id="textInput" placeholder="Enter text or URL" required>
+                <label for="colorInput">Select QR Code Color:</label>
+                <input type="color" id="colorInput" value="#000000">
+                <button type="submit">Generate Custom QR Code</button>
+            </form>
+        </div>
+
+        <!-- Right Side (QR Code Display) -->
+        <div class="right-side">
+            <div id="qrCodeDisplay">
+                <!-- QR Code will be displayed here -->
+                <p>Your generated QR code will appear here.</p>
+            </div>
+            <!-- Download Button (initially hidden) -->
+            <button id="downloadButton" style="display: none;">Download QR Code</button>
+        </div>
+    </div>
+
+    <!-- Add QRCode.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // JavaScript functionality for generating custom color QR code
+        document.getElementById('customForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const text = document.getElementById('textInput').value;
+            const color = document.getElementById('colorInput').value;
+
+            const qrCodeDisplay = document.getElementById('qrCodeDisplay');
+            qrCodeDisplay.innerHTML = ''; // Clear previous QR code and paragraph
+
+            // Generate QR code
+            const qrcode = new QRCode(qrCodeDisplay, {
+                text: text,
+                width: 200,
+                height: 200,
+                colorDark: "#000000", // Default black for most squares
+                colorLight: "#ffffff", // White background
+            });
+
+            // Modify corner squares to use custom color
+            setTimeout(() => {
+                const canvas = qrCodeDisplay.querySelector('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // Define the size of the corner squares
+                const cornerSize = 7; // Number of modules in the corner squares
+
+                // Draw custom color in the top-left corner
+                ctx.fillStyle = color;
+                ctx.fillRect(0, 0, cornerSize * 10, cornerSize * 10);
+
+                // Draw custom color in the top-right corner
+                ctx.fillRect(canvas.width - cornerSize * 10, 0, cornerSize * 10, cornerSize * 10);
+
+                // Draw custom color in the bottom-left corner
+                ctx.fillRect(0, canvas.height - cornerSize * 10, cornerSize * 10, cornerSize * 10);
+            }, 100);
+
+            // Show the download button
+            const downloadButton = document.getElementById('downloadButton');
+            downloadButton.style.display = 'block';
+
+            // Add download functionality
+            downloadButton.onclick = function () {
+                const canvas = qrCodeDisplay.querySelector('canvas');
+                if (canvas) {
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'qrcode.png';
+                    link.click();
+                } else {
+                    alert("QR code not generated yet!");
+                }
+            };
+        });
+    </script>
+</body>
+</html>
