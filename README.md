@@ -1,1 +1,1 @@
-# qrcodegen2
+QR CODE  GENERATOR
